@@ -7,6 +7,7 @@ import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 import net.kyori.adventure.text.minimessage.tag.standard.StandardTags;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
+import nl.bryansuk.foundationapi.exceptions.InvalidMessagesException;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -15,6 +16,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 
+@SuppressWarnings("unused")
 public final class TextCreator implements Listener {
 
     private static TextCreator instance;
@@ -129,5 +131,24 @@ public final class TextCreator implements Listener {
         if (miniMessage != null) {
             setupMiniMessage();
         }
+    }
+
+    public static String parseObjectToString(Object o) throws InvalidMessagesException {
+        switch (o) {
+            case String s -> {return s;}
+            case String[] s -> {return TextCreator.combineIterable(Arrays.asList(s));}
+            case List<?> s -> {return TextCreator.combineIterable(castToStringList(s));}
+            case null, default -> throw new InvalidMessagesException("Your messages configuration is invalid! It contains an object that cannot be interpreted as a Message");
+        }
+    }
+
+    public static List<String> castToStringList(List<?> list){
+        List<String> stringList = new ArrayList<>();
+        for (Object o : list){
+            if (o instanceof String s){
+                stringList.add(s);
+            }
+        }
+        return  stringList;
     }
 }
