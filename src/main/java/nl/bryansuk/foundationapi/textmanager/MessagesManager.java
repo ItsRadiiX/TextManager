@@ -2,6 +2,8 @@ package nl.bryansuk.foundationapi.textmanager;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
+import nl.bryansuk.foundationapi.languages.Language;
+import nl.bryansuk.foundationapi.languages.providers.LanguageProvider;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -75,5 +77,9 @@ public class MessagesManager {
 
     public void updateMessage(Language language, String messageKey, String message) {
         language.messages().put(messageKey, message);
+    }
+
+    public static JavaPlugin getPlugin() {
+        return plugin;
     }
 }
